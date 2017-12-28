@@ -25,7 +25,7 @@ public class EmailController {
 
     @RequestMapping("/mail/send")
     public String index() {
-        User user  = new User("Ashish", "Kumar", "sender@gmail.com");
+        User user  = new User("Ashish", "Kumar", "receiver@gmail.com");
         try{
             notificationService.sendNotification(user);
         }
