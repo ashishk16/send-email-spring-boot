@@ -9,6 +9,7 @@ import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 
 
 /**
@@ -24,11 +25,11 @@ public class EmailController {
 
     @RequestMapping("/mail/send")
     public String index() {
-        User user  = new User("Ashish", "Kumar", "ashish.ashishkumar.kumar98@gmail.com");
+        User user  = new User("Ashish", "Kumar", "sender@gmail.com");
         try{
             notificationService.sendNotification(user);
         }
-        catch (MailException e){
+        catch (MessagingException e){
             logger.info("error sending mail : "+e);
             return "email not sent!!!";
         }

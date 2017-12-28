@@ -3,10 +3,14 @@ package com.email.Services;
 import com.email.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
 
 @Service
 public class NotificationService {
@@ -19,12 +23,14 @@ public class NotificationService {
         this.javaMailSender = javaMailSender;
      }
 
-     public void sendNotification(User user) throws MailException{
-         SimpleMailMessage mail = new SimpleMailMessage();
-         mail.setTo(user.getEmail());
-         mail.setFrom(email);
-         mail.setSubject("Testing...");
-         mail.setText("Attack is the best defence");
-         javaMailSender.send(mail);
+     public void sendNotification(User user) throws MessagingException {
+         MimeMessage message = javaMailSender.createMimeMessage();
+         MimeMessageHelper helper = new MimeMessageHelper(message, true);
+         helper.setTo(user.getEmail());
+         helper.setSubject("Testing MimeMessage...");
+         helper.setText("<h3>Attack is the best defence<h3><br/><h6>Regards,</h6><br/><h5>Ashish Kumar<h5>", true);
+         FileSystemResource file = new FileSystemResource(new File("/Users/admin/Desktop/3brothers.jpg"));
+         helper.addAttachment("Attachment", file);
+         javaMailSender.send(message);
      }
 }
